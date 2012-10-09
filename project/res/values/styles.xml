@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="PageTheme" parent="android:Theme.Light.NoTitleBar">
+         <item name="android:windowBackground">@color/default_back_color</item>
+         <item name="android:colorBackground">@color/default_back_color</item>
+         <item name="android:tabStripEnabled">false</item>
+         <item name="android:tabWidgetStyle">@style/HeapTab</item>
+    </style>
+	<style name="HeapTab" parent="@android:style/TextAppearance.Medium">
+	    <item name="android:background">#22dd22</item>
+	</style>
+	<style name="HeapButton" parent="@android:style/TextAppearance.Medium">
+	    <item name="android:background">#22dd22</item>
+	</style>
+</resources>

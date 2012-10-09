@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="text_light">#ffffff</color>
+    <color name="text_dark">#000000</color>
+    <color name="default_back_color">#ffffff</color>
+    <color name="default_tab_back_color">#dddddd</color>
+</resources>

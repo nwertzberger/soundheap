@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, PracticeMateActivity!</string>
+    <string name="app_name">SoundHeap</string>
+    <string name="record">Record</string>
+    <string name="playback">Playback</string>
+    <string name="projects">Tracks</string>
+    <string name="delete_proj">Erase</string>
+    <string name="send_proj">Send Track</string>
+    <string name="no_intent_to_send">No Program Available</string>
+    <string name="open_proj">Open Track</string>
+    <string name="selective_listen">Ignore Silence</string>
+    <string name="new_file">New File on Silence</string>
+    <string name="pause_time">Silence Time</string>
+</resources>
