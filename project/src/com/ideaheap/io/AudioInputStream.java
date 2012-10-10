@@ -13,6 +13,7 @@ public abstract class AudioInputStream extends InputStream implements Closeable 
 	
 	public abstract int read(short[] pcmBuffer, int offset, int length) throws IOException;
 	
+
 	@Override
 	public int read() throws IOException {
 		short buf[] = new short[1];
