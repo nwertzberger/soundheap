@@ -7,6 +7,7 @@
     <uses-sdk android:minSdkVersion="7" />
 
     <instrumentation
+        android:functionalTest="true"
         android:name="android.test.InstrumentationTestRunner"
         android:targetPackage="com.ideaheap.sound" />
 

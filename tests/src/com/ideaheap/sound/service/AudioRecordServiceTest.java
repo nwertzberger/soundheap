@@ -37,6 +37,11 @@ public class AudioRecordServiceTest extends AndroidTestCase {
 						written = true;
 						return 0;
 					}
+
+                    @Override
+                    public int getSampleRate() {
+                        return 0;
+                    }
 		
 					@Override
 					public void close() throws IOException {
