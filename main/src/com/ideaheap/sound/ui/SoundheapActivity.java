@@ -11,6 +11,7 @@ import com.ideaheap.io.VorbisFileOutputStream;
 import com.ideaheap.io.VorbisInfo;
 import com.ideaheap.sound.Constants;
 import com.ideaheap.sound.R;
+import com.ideaheap.sound.context.SoundheapContext;
 import com.ideaheap.sound.io.AudioLevelListener;
 import com.ideaheap.sound.io.LevelActivatedOutputStream;
 import com.ideaheap.sound.service.AudioPlayService;
@@ -47,23 +48,19 @@ import android.widget.TextView;
 
 /**
  * The main ui of the simple audio recorder / playback / project selector.
+ * This is the entry point for everything else.
  * 
  * This class is responsible for interfacing with UI elements, and calling the
  * appropriate hooks into services.
  * @author nwertzberger
  *
  */
-public class SoundActivity extends TabActivity {
-    public static final String RECORD_TAB = "rec";
-    public static final String PLAYBACK_TAB = "play";
-    public static final String PROJECT_TAB = "proj";
+public class SoundheapActivity extends TabActivity {
     private static final String TAG = "SoundActivity";
-
-	private AudioRecordService recorder = new AudioRecordService();
-    private AudioPlayService   player   = new AudioPlayService();
-    
     private String playbackFile = null; // the file to playback
-
+    
+	private SoundheapContext context;
+	
 	/** 
 	 * Ensures presence of sound repository folder. It also sets up the UI.
 	 * 
@@ -72,46 +69,9 @@ public class SoundActivity extends TabActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        /*
-         * Make sure background stuff is set up.
-         */
-	    File mainDir = new File(Constants.REPOSITORY);
-        if (!mainDir.exists()) {
-        	mainDir.mkdirs();
-        }
+        context = SoundheapContext.getContext(this);
         
-        /*********************************************************************
-         * Set up the main layout.
-         */
-        
-        this.setContentView(R.layout.main);
-        
-        Resources 		res 	= this.getResources();
-        TabHost 		tabHost = this.getTabHost();
-        
-        // Add the Recording Intent
-        tabHost.addTab(createTab(
-        	R.id.record, 
-        	RECORD_TAB,
-        	res.getText(R.string.record),
-        	R.drawable.ic_btn_speak_now
-        ));
-        
-        // Add the Playback Intent
-        tabHost.addTab(createTab(
-        	R.id.playback,
-        	PLAYBACK_TAB,
-        	res.getText(R.string.playback),
-        	R.drawable.ic_menu_equalizer
-        ));
-        
-        // Add the Projects Intent
-        tabHost.addTab(createTab(
-        	R.id.projects,
-        	PROJECT_TAB,
-        	res.getText(R.string.projects),
-        	R.drawable.ic_menu_cloud
-        ));
+       
         
         /**********************************************************************
          * Set up the recording tab layout.
@@ -344,24 +304,5 @@ public class SoundActivity extends TabActivity {
         }
     }
 	
-    /**
-     * Creates a tab with text and an image.
-     * @param tabId
-     * @param tag
-     * @param charSequence
-     * @param drawable
-     * @return
-     */
-    private TabSpec createTab(
-    		final int tabId,
-    		final String tag, 
-            final CharSequence charSequence,
-            final int drawable)
-    {
-        final View tab = LayoutInflater.from(getTabHost().getContext()).
-            inflate(R.layout.tab, null);
-        ((TextView)tab.findViewById(R.id.tab_text)).setText(charSequence);
-        ((ImageView)tab.findViewById(R.id.tab_icon)).setImageResource(drawable);
-        return getTabHost().newTabSpec(tag).setIndicator(tab).setContent(tabId);
-    } 
+
 }

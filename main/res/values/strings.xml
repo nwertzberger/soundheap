@@ -12,4 +12,5 @@
     <string name="selective_listen">Ignore Silence</string>
     <string name="new_file">New File on Silence</string>
     <string name="pause_time">Silence Time</string>
+    <string name="repository">/sdcard/soundheap/</string>
 </resources>
