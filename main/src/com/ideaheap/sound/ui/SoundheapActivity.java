@@ -17,6 +17,7 @@ import com.ideaheap.sound.io.LevelActivatedOutputStream;
 import com.ideaheap.sound.service.AudioPlayService;
 import com.ideaheap.sound.service.AudioRecordService;
 import com.ideaheap.sound.service.AudioUpdateListener;
+import com.ideaheap.sound.ui.tabs.RecordTab;
 
 import android.app.TabActivity;
 import android.content.ActivityNotFoundException;
@@ -60,6 +61,7 @@ public class SoundheapActivity extends TabActivity {
     private String playbackFile = null; // the file to playback
     
 	private SoundheapContext context;
+	private Object projectTab;
 	
 	/** 
 	 * Ensures presence of sound repository folder. It also sets up the UI.
@@ -68,177 +70,9 @@ public class SoundheapActivity extends TabActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
         context = SoundheapContext.getContext(this);
-        
-       
-        
-        /**********************************************************************
-         * Set up the recording tab layout.
-         */
-        findViewById(R.id.RecordButton).setOnClickListener(new OnClickListener() {
-			public String newTrack = null;
- 			public void onClick(View parent) {
- 				if (recorder.isRecording()) {
- 			    	Log.d(TAG, "Stopping");
- 					recorder.stopRecording();
- 					updateProjects();
- 				}
- 				else {
- 					// Calculate the new filename.
-					Calendar c = Calendar.getInstance();
-					String timestamp = new SimpleDateFormat("yy.MM.dd-HH.mm.ss").format(c.getTime());
-					newTrack = "session-" + timestamp;
- 			    	Log.d(TAG, "Starting");
- 			    	createRecordingTask().execute(newTrack);
- 				}
- 			}
-         });
-		
-        /**********************************************************************
-         * Set up the playback tab.
-         */
-        // Share Me! Button
-        findViewById(R.id.ShareButton).setOnClickListener(new OnClickListener () {
-        	@Override
-        	public void onClick(View parent) {
-        		if (playbackFile != null) {
-	        		Intent intent = new Intent(Intent.ACTION_SEND);
-	        		intent.setType("audio/vorbis");
-	        		intent.putExtra(Intent.EXTRA_STREAM,
-        				Uri.parse("file:///" + Constants.REPOSITORY + playbackFile)
-        			);
-	        		try {
-	        			startActivity(Intent.createChooser(intent, getText(R.string.send_proj)));
-	        		}
-	        		catch (ActivityNotFoundException ex) {
-	        			Toast.makeText(parent.getContext(), R.string.no_intent_to_send, Toast.LENGTH_SHORT);
-	        		}
-	        	}
-        	}
-        });
-        // Playback control
-        findViewById(R.id.PlaybackButton).setOnClickListener(new OnClickListener() {
-			public void onClick(View parent) {
-				if (player.isPlaying()) {
-			    	Log.d(TAG, "Stopping");
-					player.stopPlaying();
-				}
-				else {
-			    	Log.d(TAG, "Starting");
-			    	AsyncTask<String, Integer, Void> playback = new AsyncTask<String, Integer, Void>() {
-						@Override
-						protected Void doInBackground(String... filename) {
-							try {
-								VorbisFileInputStream stream = new VorbisFileInputStream(filename[0]);
-								player.setAudioUpdateListener(new AudioUpdateListener() {
-									@Override
-									public void onUpdate(int trackLocation) {
-										publishProgress(trackLocation);
-									}
-								});
-								player.startPlaying(stream);
-							} catch (IOException e) {
-								Log.e(TAG,"Can't play back " + playbackFile, e);
-							}
-							return null;
-						}
-						
-						@Override
-						protected void onProgressUpdate(Integer ... progress) {
-							updatePlaybackButton(progress[0]);
-						}
-			    	};
-			    	playback.execute(Constants.REPOSITORY + playbackFile);
-				}
-			}
-        });
-       
-		/*********************************************************************
-		 * Set up the Projects tab.
-		 */
-		
-		/*********************************************************************
-		 * Finish Up.
-		 */
-        //  Open up with a recorder.
-        tabHost.setCurrentTabByTag(RECORD_TAB);
     }
     
-    /**
-     * This builds the AsyncTask for recording.
-     * TODO: Break this out into another file.
-     * @return
-     */
- 	private AsyncTask<String, Integer, Void> createRecordingTask() {
- 		return new AsyncTask<String, Integer, Void>() {
-			final VorbisInfo info = new VorbisInfo();
-			VorbisFileOutputStream fileOut;
-			@Override
-			protected Void doInBackground(String... params) {
-				final String newTrack = params[0];
-				recorder.setAudioUpdateListener(new AudioUpdateListener() {
-					@Override
-					public void onUpdate(int trackLocation) {
-						publishProgress(trackLocation);
-					}
-				});
-				try {
-					info.sampleRate = AudioRecordService.getSampleRateHz();
- 					playbackFile = newTrack + "-take1" + ".ogg";
-					fileOut = new VorbisFileOutputStream(
-						Constants.REPOSITORY + playbackFile,
-						info
-					);
-					LevelActivatedOutputStream stream = new LevelActivatedOutputStream(fileOut, 1000);
-					
-					// TODO: get this right.
-					stream.setLevelListener(new AudioLevelListener() {
-						@Override
-						public AudioOutputStream onQuiet(AudioOutputStream stream) {
-							return null;
-						}
-
-						@Override
-						public AudioOutputStream onLoud(AudioOutputStream stream) {
-							// TODO Auto-generated method stub
-							return null;
-						}
-					});
- 					recorder.startRecording(stream);
- 					
-				} catch (IOException e) {
-					Log.e(TAG, "Can't create vorbis stream", e);
-				}
-				return null;
-			}
-			@Override
-			protected void onProgressUpdate(Integer ... progress) {
-				updateRecordButton(progress[0]);
-			}
-	 	};
- 	}
-     
-	private void updatePlaybackButton(int trackLocation) {
-		ImageButton butt = (ImageButton) findViewById(R.id.PlaybackButton);
-		if (trackLocation < 0) {
-			butt.setImageResource(R.drawable.big_ic_media_play);
-		}
-		else {
-			butt.setImageResource(R.drawable.big_ic_media_pause);
-		}
-	}
-	
-    private void updateRecordButton(int trackLocation) {
-		ImageButton butt = (ImageButton) findViewById(R.id.RecordButton);
-		if (trackLocation < 0) {
-			butt.setImageResource(R.drawable.big_ic_mic);
-		}
-		else {
-			butt.setImageResource(R.drawable.big_ic_mic_on);
-		}
-	}
-	
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenuInfo menuInfo) {
@@ -249,60 +83,16 @@ public class SoundheapActivity extends TabActivity {
     
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		String file = ((TextView)info.targetView).getText().toString();
-        switch (item.getItemId()) {
-            case R.id.open_project:
-				Toast.makeText(getApplicationContext(), "Loading " + file, Toast.LENGTH_SHORT).show();
-				playbackFile = file;
-				getTabHost().setCurrentTabByTag(PLAYBACK_TAB);
-                return true;
-            case R.id.delete_project:
-				if (new File(Constants.REPOSITORY + file).delete()) {
-					Toast.makeText(getApplicationContext(), "Deleted " + file, Toast.LENGTH_SHORT).show();
-				}
-				else {
-					Toast.makeText(getApplicationContext(), "Error Deleting " + file, Toast.LENGTH_SHORT).show();
-				}
-				this.updateProjects();
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
+    	return context.getProjectTab().selectTrack(item);
     }
     
     @Override
     public void onPause() {
     	super.onPause();
-    	this.recorder.stopRecording();	
     }
     
     @Override
     public void onResume() {
     	super.onResume();
-    	this.updateProjects();
     }
-    
-    /**
-     * Updates the project tab with the latest Projects.
-     */
-	private void updateProjects() {
-	    String[] recordFiles = new File(Constants.REPOSITORY).list();
-        if (recordFiles != null) {
-	        ListView lv = (ListView) findViewById(R.id.RecordList);
-	        lv.setAdapter(new ArrayAdapter<String>(this,R.layout.project_item, recordFiles));
-	        lv.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					String file = ((TextView) view).getText().toString();
-					Toast.makeText(getApplicationContext(), "Loading " + file, Toast.LENGTH_SHORT).show();
-					playbackFile = file;
-					getTabHost().setCurrentTabByTag(PLAYBACK_TAB);
-				}
-	        });
-	        registerForContextMenu(findViewById(R.id.RecordList));
-        }
-    }
-	
-
 }

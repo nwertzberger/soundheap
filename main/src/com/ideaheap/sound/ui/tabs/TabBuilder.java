@@ -1,5 +1,6 @@
-package com.ideaheap.sound.ui;
+package com.ideaheap.sound.ui.tabs;
 
+import android.app.TabActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,8 +9,15 @@ import android.widget.TextView;
 
 import com.ideaheap.sound.R;
 
-public class TabBuilder {
-
+public abstract class TabBuilder {
+	private final TabHost tabHost;
+	public TabBuilder(TabHost tabHost) {
+		this.tabHost = tabHost;
+	}
+	
+	public abstract void addTab();
+	
+	
 	/**
 	 * Creates a tab with text and an image.
 	 * 
@@ -20,7 +28,6 @@ public class TabBuilder {
 	 * @return
 	 */
 	public void createTab(
-			final TabHost tabHost,
 			final int tabId,
 			final String tag,
 			final CharSequence charSequence,
