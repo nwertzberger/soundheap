@@ -2,9 +2,9 @@ package com.ideaheap.sound.io;
 
 import java.io.IOException;
 
-import com.ideaheap.io.AudioOutputStream;
-
 import android.util.Log;
+
+import com.ideaheap.io.AudioOutputStream;
 
 public class LevelActivatedOutputStream extends AudioOutputStream {
 	
@@ -19,7 +19,6 @@ public class LevelActivatedOutputStream extends AudioOutputStream {
 	private int framesWaited = 0;
 	
 	private AudioOutputStream outStream;
-
 	private AudioLevelListener levelListener;
 	
 	public LevelActivatedOutputStream(AudioOutputStream out, int pauseTimeMillis) {

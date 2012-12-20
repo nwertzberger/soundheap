@@ -29,26 +29,18 @@ import com.ideaheap.sound.ui.tabs.TabBuilder;
  */
 public class SoundheapContext {
 	private static SoundheapContext ctx = null;
-	/*
-	 * SINGLETONS
-	 */
-	private Resources resources = null;
-	private TabBuilder builder;
-	
-	/*
-	 * REQUEST SCOPE
-	 */
-	private MainView mainView = null;
+
 	private RepositoryService repository;
 	private ProjectTab projects;
 	private AudioRecordService recorder;
 	private AudioPlayService player;
-	
-	// This is a Singleton class, so we can initialize singleton scope in the constructor.
+
+	// This is a Singleton class, so we can initialize singleton scope in the
+	// constructor.
 	public SoundheapContext(Activity activity) {
 		this.singletonScope(activity);
 	}
-	
+
 	public static SoundheapContext getContext(TabActivity activity) {
 		if (ctx == null) {
 			ctx = new SoundheapContext(activity);
@@ -56,37 +48,43 @@ public class SoundheapContext {
 		ctx.requestScope(activity);
 		return ctx;
 	}
-	
+
+	/**
+	 * Things that only should exist once.
+	 * @param activity
+	 */
 	private void singletonScope(Activity activity) {
 		recorder = new AudioRecordService();
 		player = new AudioPlayService();
-		
+
 		// Wire up our base repository
-		resources = activity.getResources();
-		String REPOSITORY = resources.getString(R.string.repository);
+		Resources res = activity.getResources();
+		String REPOSITORY = res.getString(R.string.repository);
 		File repo = new File(REPOSITORY);
 		repository = new RepositoryService(repo);
 	}
-	
-	// Things that should be re-generated every time the context is re-initialized
+
+	/**
+	 *  Things that should be re-generated every time the context is
+	 *  re-initialized
+	 * @param activity
+	 */
 	private void requestScope(TabActivity activity) {
 		Resources res = activity.getResources();
 		TabHost tabHost = activity.getTabHost();
 
-		PlaybackTab playback = new PlaybackTab(activity, tabHost, res, repository, player);
-		RecordTab record = new RecordTab(activity, tabHost, res, recorder, projects, playback, repository);
+		PlaybackTab playback = new PlaybackTab(activity, tabHost, res,
+				repository, player);
+		RecordTab record = new RecordTab(activity, tabHost, res, recorder,
+				projects, playback, repository);
 		projects = new ProjectTab(activity, tabHost, res, repository);
-		
+
 		// Build the ui views
-		mainView = new MainView(
-			activity,
-			Arrays.asList(
-				record,
-				playback,
-				projects
-			),
-			RecordTab.RECORD_TAB
-		);
+		new MainView(activity, Arrays.asList(
+				(TabBuilder) record,
+				(TabBuilder) playback,
+				(TabBuilder) projects),
+				RecordTab.RECORD_TAB);
 	}
 
 	public ProjectTab getProjectTab() {

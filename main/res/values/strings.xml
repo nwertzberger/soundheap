@@ -13,4 +13,5 @@
     <string name="new_file">New File on Silence</string>
     <string name="pause_time">Silence Time</string>
     <string name="repository">/sdcard/soundheap/</string>
+    <string name="recordText">Record</string>
 </resources>

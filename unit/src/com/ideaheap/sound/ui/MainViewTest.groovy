@@ -38,9 +38,9 @@ public class MainViewTest {
 	
 	@Test
 	public void generatesTabView() {
-		MainView mainView = new MainView(activity, Arrays.asList(builder), "FAKE");
+		new MainView(activity, [builder], "FAKE");
 		Mockito.verify(activity).getTabHost();
-		Mockito.verify(builder).addTab();
+		Mockito.verify(builder).buildTab();
 		Mockito.verify(host).setCurrentTabByTag("FAKE");
 	}
 }
