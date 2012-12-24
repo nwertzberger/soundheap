@@ -33,6 +33,7 @@ public class SoundheapActivity extends TabActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "Starting Up");
+        setContentView(R.layout.main);
         context = SoundheapContext.getContext(this);
     }
     
@@ -46,6 +47,7 @@ public class SoundheapActivity extends TabActivity {
     
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+    	super.onContextItemSelected(item);
     	return context.getProjectTab().selectTrack(item);
     }
     

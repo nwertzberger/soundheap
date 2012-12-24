@@ -1,11 +1,12 @@
 package com.ideaheap.sound.ui;
 
+import static org.mockito.Mockito.*;
+
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.ideaheap.sound.ui.MainView;
@@ -32,15 +33,15 @@ public class MainViewTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		Mockito.when(activity.getTabHost()).thenReturn(host);
-		Mockito.when(activity.getResources()).thenReturn(resources);
+		when(activity.getTabHost()).thenReturn(host);
+		when(activity.getResources()).thenReturn(resources);
 	}
 	
 	@Test
 	public void generatesTabView() {
 		new MainView(activity, [builder], "FAKE");
-		Mockito.verify(activity).getTabHost();
-		Mockito.verify(builder).buildTab();
-		Mockito.verify(host).setCurrentTabByTag("FAKE");
+		verify(activity, atLeastOnce()).getTabHost();
+		verify(builder).buildTab();
+		verify(host).setCurrentTabByTag("FAKE");
 	}
 }

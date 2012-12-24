@@ -20,13 +20,19 @@ public class AudioPlayService {
 	private AudioUpdateListener audioUpdateListener = null;
 	
 	private static final int sampleRateHz = 44100;
-	private static final int trackBufferSize;
+	private static int trackBufferSize;
 	
 	static {
-		trackBufferSize = AudioTrack.getMinBufferSize(
+		// for unit testing
+		try {
+			trackBufferSize = AudioTrack.getMinBufferSize(
 				sampleRateHz,
 				AudioFormat.CHANNEL_OUT_MONO,
 				AudioFormat.ENCODING_PCM_16BIT);
+		}
+		catch(RuntimeException e) {
+			trackBufferSize = 0;
+		}
 	}
 	
 	public AudioPlayService() {

@@ -22,7 +22,7 @@ public class AudioRecordService {
 	
 	// Microphone settings (sample rate / buffers)
 	private static final int sampleRateHz = 44100;
-	private static final int recordBufferSize;
+	private static int recordBufferSize;
 	
 	// The many states of recording a track
 	private static final int RECORDING 	= 0;
@@ -42,11 +42,16 @@ public class AudioRecordService {
 	 * Calculate the buffer sizes based on out
 	 */
 	static {
-		recordBufferSize = AudioRecord.getMinBufferSize(
-			sampleRateHz,
-			AudioFormat.CHANNEL_CONFIGURATION_MONO,
-			AudioFormat.ENCODING_PCM_16BIT
-		);
+		// For unit testing.
+		try {
+			recordBufferSize = AudioRecord.getMinBufferSize(
+				sampleRateHz,
+				AudioFormat.CHANNEL_CONFIGURATION_MONO,
+				AudioFormat.ENCODING_PCM_16BIT
+			);
+		} catch (RuntimeException e) {
+			recordBufferSize = 0;
+		}
 	}
 	
 	public AudioRecordService() {

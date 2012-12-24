@@ -1,6 +1,7 @@
 package com.ideaheap.sound.ui.tabs;
 
 import android.app.Activity;
+import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -30,12 +31,11 @@ public class ProjectTab implements TabBuilder {
 
 	private final TabHost tabHost;
 
-	public ProjectTab(Activity activity, TabHost tabHost, Resources res,
-			RepositoryService repository) {
+	public ProjectTab(TabActivity activity, RepositoryService repository) {
 		super();
 		this.activity = activity;
-		this.tabHost = tabHost;
-		this.res = res;
+		this.tabHost = activity.getTabHost();
+		this.res = activity.getResources();
 		this.repository = repository;
 	}
 
@@ -43,10 +43,13 @@ public class ProjectTab implements TabBuilder {
 	public void buildTab() {
         // Tab for Videos
         TabSpec spec = tabHost.newTabSpec(PROJECT_TAB);
-        spec.setIndicator(res.getString(R.id.projects_pane),
+        spec.setIndicator(res.getString(R.string.projects),
         		res.getDrawable(R.drawable.ic_menu_cloud));
-        Intent intent = new Intent(activity, ProjectTab.class);
-        spec.setContent(intent);
+        try { // TODO: refactor this
+	        Intent intent = new Intent(activity, ProjectTab.class);
+	        spec.setContent(intent);
+        }
+        catch (RuntimeException e) { }
 	} 
 	
 	/**

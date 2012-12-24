@@ -37,7 +37,7 @@ public class SoundheapContext {
 
 	// This is a Singleton class, so we can initialize singleton scope in the
 	// constructor.
-	public SoundheapContext(Activity activity) {
+	private SoundheapContext(Activity activity) {
 		this.singletonScope(activity);
 	}
 
@@ -73,11 +73,9 @@ public class SoundheapContext {
 		Resources res = activity.getResources();
 		TabHost tabHost = activity.getTabHost();
 
-		PlaybackTab playback = new PlaybackTab(activity, tabHost, res,
-				repository, player);
-		RecordTab record = new RecordTab(activity, tabHost, res, recorder,
-				projects, playback, repository);
-		projects = new ProjectTab(activity, tabHost, res, repository);
+		PlaybackTab playback = new PlaybackTab(activity, repository, player);
+		RecordTab record = new RecordTab(activity, recorder, projects, playback, repository);
+		projects = new ProjectTab(activity, repository);
 
 		// Build the ui views
 		new MainView(activity, Arrays.asList(

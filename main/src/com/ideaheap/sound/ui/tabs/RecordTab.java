@@ -5,10 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.TabActivity;
 import android.content.res.Resources;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,23 +37,19 @@ public class RecordTab implements TabBuilder {
 	private final TabHost tabHost;
 
 	public RecordTab(
-			Activity activity,
-			TabHost tabHost,
-			Resources res,
+			TabActivity activity,
 			final AudioRecordService recorder,
 			final ProjectTab projectTab,
 			PlaybackTab playbackTab,
 			RepositoryService repository) {
 		super();
 		this.activity = activity;
-		this.tabHost = tabHost;
-		this.res = res;
+		this.tabHost = activity.getTabHost();
+		this.res = activity.getResources();
 		this.recorder = recorder;
 		this.projectTab = projectTab;
 		this.playbackTab = playbackTab;
 		this.repository = repository;
-		
-	   
 	}
 	
 	@Override
