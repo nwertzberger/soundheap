@@ -5,6 +5,13 @@ Android Sound Recording Applicaiton
 
 Link: https://play.google.com/store/apps/details?id=com.ideaheap.sound
 
+Dependencies
+------------
+
+This project depends on libogg-vorbis-android and ActionBarSherlock. Both of
+these need to be added as library projects. You will need to configure the
+locations of these projects in main/project.properties.
+
 Architecture
 ------------
 

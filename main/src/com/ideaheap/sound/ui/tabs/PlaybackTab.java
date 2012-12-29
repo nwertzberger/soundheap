@@ -46,7 +46,7 @@ public class PlaybackTab implements TabBuilder {
 	public void buildTab() {
         // Tab for Videos
         TabSpec spec = tabHost.newTabSpec(PLAYBACK_TAB);
-        spec.setIndicator(res.getString(R.string.playback),
+        spec.setIndicator(res.getString(R.string.playback_title),
         		res.getDrawable(R.drawable.ic_menu_equalizer));
         try { // TODO: For unit testing (until we refactor this)
 	        Intent intent = new Intent(activity, PlaybackTab.class);
@@ -54,7 +54,8 @@ public class PlaybackTab implements TabBuilder {
         } catch(RuntimeException e) {
         	// Don't really care TBH
         }
-        
+        	
+        tabHost.addTab(spec);
         activity.findViewById(R.id.PlaybackButton).setOnClickListener(listener);
         
 		// Share Me! Button
@@ -70,7 +71,7 @@ public class PlaybackTab implements TabBuilder {
 						try {
 							activity.startActivity(Intent.createChooser(
 									intent,
-									activity.getText(R.string.send_proj)));
+									activity.getText(R.string.send_action)));
 						} catch (ActivityNotFoundException ex) {
 							Toast.makeText(parent.getContext(),
 									R.string.no_intent_to_send,

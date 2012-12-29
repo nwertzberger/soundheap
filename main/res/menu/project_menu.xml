@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:id="@+id/delete_project"
-	      android:title="@string/delete_proj" />
+	      android:title="@string/delete_action" />
 	<item android:id="@+id/open_project"
-	      android:title="@string/open_proj" />
-    
-
+	      android:title="@string/open_action" />
 </menu>

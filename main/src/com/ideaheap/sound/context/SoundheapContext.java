@@ -8,11 +8,14 @@ import android.app.TabActivity;
 import android.content.res.Resources;
 import android.widget.TabHost;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ideaheap.sound.R;
 import com.ideaheap.sound.service.AudioPlayService;
 import com.ideaheap.sound.service.AudioRecordService;
 import com.ideaheap.sound.service.RepositoryService;
-import com.ideaheap.sound.ui.MainView;
+import com.ideaheap.sound.ui.MainViewBuilder;
+import com.ideaheap.sound.ui.SoundheapActivity;
 import com.ideaheap.sound.ui.tabs.PlaybackTab;
 import com.ideaheap.sound.ui.tabs.ProjectTab;
 import com.ideaheap.sound.ui.tabs.RecordTab;
@@ -30,30 +33,22 @@ import com.ideaheap.sound.ui.tabs.TabBuilder;
 public class SoundheapContext {
 	private static SoundheapContext ctx = null;
 
-	private RepositoryService repository;
-	private ProjectTab projects;
-	private AudioRecordService recorder;
-	private AudioPlayService player;
-
-	// This is a Singleton class, so we can initialize singleton scope in the
-	// constructor.
-	private SoundheapContext(Activity activity) {
-		this.singletonScope(activity);
-	}
-
-	public static SoundheapContext getContext(TabActivity activity) {
-		if (ctx == null) {
-			ctx = new SoundheapContext(activity);
-		}
-		ctx.requestScope(activity);
-		return ctx;
-	}
+	// Singletons
+	public final AudioRecordService recorder;
+	public final AudioPlayService player;
+	public final RepositoryService repository;
+	
+	// Request
+	public ProjectTab projects;
+	public MainViewBuilder mainViewBuilder;
+	
 
 	/**
-	 * Things that only should exist once.
+	 * This is a Singleton class, so we can initialize singleton scope in the
+	 * constructor.
 	 * @param activity
 	 */
-	private void singletonScope(Activity activity) {
+	private SoundheapContext(SherlockFragmentActivity activity) {
 		recorder = new AudioRecordService();
 		player = new AudioPlayService();
 
@@ -62,6 +57,7 @@ public class SoundheapContext {
 		String REPOSITORY = res.getString(R.string.repository);
 		File repo = new File(REPOSITORY);
 		repository = new RepositoryService(repo);
+		
 	}
 
 	/**
@@ -69,23 +65,17 @@ public class SoundheapContext {
 	 *  re-initialized
 	 * @param activity
 	 */
-	private void requestScope(TabActivity activity) {
-		Resources res = activity.getResources();
-		TabHost tabHost = activity.getTabHost();
-
-		PlaybackTab playback = new PlaybackTab(activity, repository, player);
-		RecordTab record = new RecordTab(activity, recorder, projects, playback, repository);
-		projects = new ProjectTab(activity, repository);
-
+	private void requestScope(SherlockFragmentActivity activity) {
 		// Build the ui views
-		new MainView(activity, Arrays.asList(
-				(TabBuilder) record,
-				(TabBuilder) playback,
-				(TabBuilder) projects),
-				RecordTab.RECORD_TAB);
+		mainViewBuilder = new MainViewBuilder(activity);
+	}
+	
+	public static SoundheapContext getContext(SherlockFragmentActivity activity) {
+		if (ctx == null) {
+			ctx = new SoundheapContext(activity);
+		}
+		ctx.requestScope(activity);
+		return ctx;
 	}
 
-	public ProjectTab getProjectTab() {
-		return projects;
-	}
 }

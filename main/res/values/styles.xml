@@ -4,11 +4,14 @@
          <item name="android:windowBackground">@color/default_back_color</item>
          <item name="android:colorBackground">@color/default_back_color</item>
          <item name="android:tabStripEnabled">false</item>
-         <item name="android:tabWidgetStyle">@style/HeapTab</item>
     </style>
+    <!--
+    Add to the PageTheme above
+         <item name="android:tabWidgetStyle">@style/HeapTab</item>
 	<style name="HeapTab" parent="@android:style/TextAppearance.Medium">
 	    <item name="android:background">#22dd22</item>
 	</style>
+	-->
 	<style name="HeapButton" parent="@android:style/TextAppearance.Medium">
 	    <item name="android:background">#22dd22</item>
 	</style>

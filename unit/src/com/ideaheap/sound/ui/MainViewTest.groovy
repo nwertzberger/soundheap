@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.ideaheap.sound.ui.MainView;
+import com.ideaheap.sound.ui.MainViewBuilder;
 import com.ideaheap.sound.ui.tabs.TabBuilder;
 
 import android.app.TabActivity;
@@ -39,7 +39,7 @@ public class MainViewTest {
 	
 	@Test
 	public void generatesTabView() {
-		new MainView(activity, [builder], "FAKE");
+		new MainViewBuilder(activity, [builder], "FAKE");
 		verify(activity, atLeastOnce()).getTabHost();
 		verify(builder).buildTab();
 		verify(host).setCurrentTabByTag("FAKE");
