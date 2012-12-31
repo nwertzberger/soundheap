@@ -43,8 +43,6 @@ public class ProjectTab implements TabBuilder {
 	public void buildTab() {
         // Tab for Videos
         TabSpec spec = tabHost.newTabSpec(PROJECT_TAB);
-        spec.setIndicator(res.getString(R.string.project_title),
-        		res.getDrawable(R.drawable.ic_menu_cloud));
         try { // TODO: refactor this
 	        Intent intent = new Intent(activity, ProjectTab.class);
 	        spec.setContent(intent);

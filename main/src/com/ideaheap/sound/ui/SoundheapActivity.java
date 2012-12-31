@@ -6,14 +6,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.ideaheap.sound.R;
 import com.ideaheap.sound.context.SoundheapContext;
 
@@ -31,7 +31,6 @@ public class SoundheapActivity extends SherlockFragmentActivity {
     private static final String TAG = SoundheapActivity.class.toString();
 	private SoundheapContext context;
 	private final SherlockFragmentActivity thisActivity = this;
-	
 	
 	/** 
 	 * Ensures presence of sound repository folder. It also sets up the UI.
@@ -62,7 +61,6 @@ public class SoundheapActivity extends SherlockFragmentActivity {
         bar.addTab(playback);
         bar.addTab(project);
     }
-    
     
     class MyTabsListener implements ActionBar.TabListener {
         public Fragment fragment;
@@ -100,20 +98,6 @@ public class SoundheapActivity extends SherlockFragmentActivity {
     }
     
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.project_menu, menu);
-    }
-    
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-    	super.onContextItemSelected(item);
-    	return true;
-    }
-    
-    @Override
     public void onResume() {
     	super.onResume();
     }
@@ -121,6 +105,13 @@ public class SoundheapActivity extends SherlockFragmentActivity {
     @Override
     public void onPause() {
     	super.onPause();
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	MenuInflater inflater = this.getSupportMenuInflater();
+    	inflater.inflate(R.menu.main_menu, menu);
+		return true;
     }
 
 }

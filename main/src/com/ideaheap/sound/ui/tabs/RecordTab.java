@@ -53,8 +53,6 @@ public class RecordTab implements TabBuilder {
 	public void buildTab() {
 		// Tab for Videos
 		TabSpec spec = tabHost.newTabSpec(RECORD_TAB);
-		spec.setIndicator(res.getString(R.string.record_title),
-				res.getDrawable(R.drawable.ic_btn_speak_now));
 		tabHost.addTab(spec);
 
 		/**********************************************************************
@@ -85,11 +83,6 @@ public class RecordTab implements TabBuilder {
 	private void updateRecordButton(int trackLocation) {
 		ImageButton butt = (ImageButton) activity
 				.findViewById(R.id.RecordButton);
-		if (trackLocation < 0) {
-			butt.setImageResource(R.drawable.big_ic_mic);
-		} else {
-			butt.setImageResource(R.drawable.big_ic_mic_on);
-		}
 	}
 
 	/**

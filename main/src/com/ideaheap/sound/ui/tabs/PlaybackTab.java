@@ -46,8 +46,6 @@ public class PlaybackTab implements TabBuilder {
 	public void buildTab() {
         // Tab for Videos
         TabSpec spec = tabHost.newTabSpec(PLAYBACK_TAB);
-        spec.setIndicator(res.getString(R.string.playback_title),
-        		res.getDrawable(R.drawable.ic_menu_equalizer));
         try { // TODO: For unit testing (until we refactor this)
 	        Intent intent = new Intent(activity, PlaybackTab.class);
 	        spec.setContent(intent);
@@ -59,7 +57,6 @@ public class PlaybackTab implements TabBuilder {
         activity.findViewById(R.id.PlaybackButton).setOnClickListener(listener);
         
 		// Share Me! Button
-		activity.findViewById(R.id.ShareButton).setOnClickListener(
 			new OnClickListener() {
 				@Override
 				public void onClick(View parent) {
@@ -79,8 +76,7 @@ public class PlaybackTab implements TabBuilder {
 						}
 					}
 				}
-			}
-		);
+			};
 	} 
 
 	public void setPlaybackFile(String file) {

@@ -1,39 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center"
-    android:orientation="vertical"
+    android:padding="16dp"
     android:id="@+id/record_layout" >
-
+    <TextView 
+        android:id="@+id/RecordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:text="@string/record_title"
+        />
     <ImageButton
         android:id="@+id/RecordButton"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/big_ic_mic"
+        android:layout_below="@+id/RecordText"
+        android:padding="30dp"
+        android:src="@drawable/device_access_mic_muted"
         android:contentDescription="@string/record_title" />
-
-    <CheckBox
-        android:id="@+id/selectiveListenBox"
+    <CheckBox 
+        android:id="@+id/IgnoreSilenceBox"
+        android:text="@string/ignore_silence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/selective_listen" />
-
-    <CheckBox
-        android:id="@+id/newFileBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/new_file" />
-
-    <TextView
-        android:id="@+id/SilenceTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pause_time" />
-
-    <SeekBar
-        android:id="@+id/silence_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-</LinearLayout>
+        android:layout_alignLeft="@+id/RecordButton"
+        android:layout_below="@+id/RecordButton"
+        android:checked="false"
+        />
+    
+</RelativeLayout>

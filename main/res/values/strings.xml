@@ -8,8 +8,16 @@
     <string name="send_action">Send Track</string>
     <string name="no_intent_to_send">No Program Available</string>
     <string name="open_action">Open Track</string>
-    <string name="selective_listen">Ignore Silence</string>
-    <string name="new_file">New File on Silence</string>
+    <string name="ignore_silence">Ignore Silence</string>
+    <string name="new_file_on_silence">New File on Silence</string>
     <string name="pause_time">Silence Time</string>
     <string name="repository">/sdcard/soundheap/</string>
+    <string name="share">Share</string>
+    <string name="previous">Previous</string>
+    <string name="rewind">Rewind</string>
+    <string name="next">Next</string>
+    <string name="fast_forward">Fast Forward</string>
+    <string name="play_pause">Play/Pause</string>
+    <string name="stop">Stop</string>
+    <string name="about">About</string>
 </resources>

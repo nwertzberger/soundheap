@@ -1,26 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playback_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:id="@+id/playback_layout" >
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:gravity="center"
-	    android:layout_weight="1"
-	    android:orientation="vertical" >
-	
-	    <ImageButton
-	        android:id="@+id/PlaybackButton"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:src="@drawable/big_ic_media_play" />
-	</LinearLayout>
-    <ImageButton
+    android:padding="16dp" >
+	<TextView 
+        android:id="@+id/PlaybackTextBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:text="@string/playback_title"
+        />
+
+    <LinearLayout
+        android:id="@+id/PlaybackBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/PlaybackTextBox"
+        tools:ignore="UselessParent" >
+
+        <ImageButton
+            android:id="@+id/PreviousButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/previous"
+            android:src="@drawable/av_previous" />
+
+        <ImageButton
+            android:id="@+id/RewindButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/rewind"
+            android:src="@drawable/av_rewind" />
+
+        <ImageButton
+            android:id="@+id/StopButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/stop"
+            android:src="@drawable/av_stop" />
+
+        <ImageButton
+            android:id="@+id/PlaybackButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/play_pause"
+            android:src="@drawable/av_play" />
+
+        <ImageButton
+            android:id="@+id/FastForwardButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/fast_forward"
+            android:src="@drawable/av_fast_forward" />
+
+        <ImageButton
+            android:id="@+id/NextButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/next"
+            android:src="@drawable/av_next" />
+    </LinearLayout>
+    <SeekBar
+        android:id="@+id/PlaybackSeekBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/PlaybackBar" />
+    <ImageButton 
         android:id="@+id/ShareButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_menu_share_holo_dark" />
-</LinearLayout>
+        android:layout_below="@+id/PlaybackSeekBar"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/share"
+        android:src="@drawable/social_share"/>
+</RelativeLayout>
