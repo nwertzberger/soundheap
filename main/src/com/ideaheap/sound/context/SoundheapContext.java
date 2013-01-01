@@ -2,6 +2,8 @@ package com.ideaheap.sound.context;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.TabActivity;
@@ -11,15 +13,22 @@ import android.widget.TabHost;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ideaheap.sound.R;
+import com.ideaheap.sound.control.MainController;
+import com.ideaheap.sound.control.PlaybackController;
+import com.ideaheap.sound.control.ProjectController;
+import com.ideaheap.sound.control.RecordController;
+import com.ideaheap.sound.control.TabController;
+import com.ideaheap.sound.control.TabListener;
 import com.ideaheap.sound.service.AudioPlayService;
 import com.ideaheap.sound.service.AudioRecordService;
 import com.ideaheap.sound.service.RepositoryService;
-import com.ideaheap.sound.ui.MainViewBuilder;
+import com.ideaheap.sound.ui.PlaybackFragment;
+import com.ideaheap.sound.ui.ProjectFragment;
+import com.ideaheap.sound.ui.RecordFragment;
 import com.ideaheap.sound.ui.SoundheapActivity;
 import com.ideaheap.sound.ui.tabs.PlaybackTab;
 import com.ideaheap.sound.ui.tabs.ProjectTab;
 import com.ideaheap.sound.ui.tabs.RecordTab;
-import com.ideaheap.sound.ui.tabs.TabBuilder;
 
 /**
  * Instead of using Spring or some other IOC framework, I have decided to
@@ -39,9 +48,7 @@ public class SoundheapContext {
 	public final RepositoryService repository;
 	
 	// Request
-	public ProjectTab projects;
-	public MainViewBuilder mainViewBuilder;
-	
+	public MainController mainController;
 
 	/**
 	 * This is a Singleton class, so we can initialize singleton scope in the
@@ -66,8 +73,32 @@ public class SoundheapContext {
 	 * @param activity
 	 */
 	private void requestScope(SherlockFragmentActivity activity) {
+		List<TabController> tabs = new LinkedList<TabController>();
+		
+		tabs.add(new RecordController(
+			activity,
+			new TabListener(
+				new RecordFragment(),
+				R.id.fragment_container
+			)
+		));
+		tabs.add(new PlaybackController(
+			activity,
+			new TabListener(
+				new PlaybackFragment(),
+				R.id.fragment_container
+			)
+		));
+		tabs.add(new ProjectController(
+			activity,
+			new TabListener(
+				new ProjectFragment(),
+				R.id.fragment_container
+			)
+		));
+		
 		// Build the ui views
-		mainViewBuilder = new MainViewBuilder(activity);
+		mainController = new MainController(activity, tabs);
 	}
 	
 	public static SoundheapContext getContext(SherlockFragmentActivity activity) {

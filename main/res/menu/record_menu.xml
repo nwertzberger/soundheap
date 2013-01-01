@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/ignore_silence"
+        android:title="@string/ignore_silence"
+        android:checkable="true"
+        android:checked="false" android:visible="true">
+    </item>
+    <item
+        android:id="@+id/new_file_on_silence"
+        android:title="@string/new_file_on_silence"
+        android:checkable="true"
+        android:checked="false" android:visible="true">
+    </item>
+</menu>

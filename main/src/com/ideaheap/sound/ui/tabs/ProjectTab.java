@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.ideaheap.sound.R;
 import com.ideaheap.sound.service.RepositoryService;
 
-public class ProjectTab implements TabBuilder {
+public class ProjectTab {
 	public static final String PROJECT_TAB = "proj";
 
 	private final Resources res;
@@ -39,7 +39,6 @@ public class ProjectTab implements TabBuilder {
 		this.repository = repository;
 	}
 
-	@Override
 	public void buildTab() {
         // Tab for Videos
         TabSpec spec = tabHost.newTabSpec(PROJECT_TAB);

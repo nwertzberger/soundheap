@@ -22,7 +22,7 @@ import com.ideaheap.sound.service.AudioPlayService;
 import com.ideaheap.sound.service.AudioUpdateListener;
 import com.ideaheap.sound.service.RepositoryService;
 
-public class PlaybackTab implements TabBuilder {
+public class PlaybackTab {
 	public static final String PLAYBACK_TAB = "play";
 	private static final String TAG = "PlaybackTab";
 
@@ -42,7 +42,6 @@ public class PlaybackTab implements TabBuilder {
 		this.player = player;
 	}
 	
-	@Override
 	public void buildTab() {
         // Tab for Videos
         TabSpec spec = tabHost.newTabSpec(PLAYBACK_TAB);

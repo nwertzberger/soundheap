@@ -24,7 +24,7 @@ import com.ideaheap.sound.service.AudioRecordService;
 import com.ideaheap.sound.service.AudioUpdateListener;
 import com.ideaheap.sound.service.RepositoryService;
 
-public class RecordTab implements TabBuilder {
+public class RecordTab {
 	public static final String RECORD_TAB = "rec";
 	private static final String TAG = "RecordTab";
 
@@ -49,7 +49,6 @@ public class RecordTab implements TabBuilder {
 		this.repository = repository;
 	}
 
-	@Override
 	public void buildTab() {
 		// Tab for Videos
 		TabSpec spec = tabHost.newTabSpec(RECORD_TAB);

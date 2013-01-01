@@ -27,8 +27,7 @@ public class AudioRecordService {
 	// The many states of recording a track
 	private static final int RECORDING 	= 0;
 	private static final int STOPPING 	= 1;
-	private static final int STOPPED 	= 2;
-
+	private static final int STOPPED 		= 2;
 	private static final int EXTRA_SAMPLES = 5;
 	
 	// holds sound for recording.
@@ -46,7 +45,7 @@ public class AudioRecordService {
 		try {
 			recordBufferSize = AudioRecord.getMinBufferSize(
 				sampleRateHz,
-				AudioFormat.CHANNEL_CONFIGURATION_MONO,
+				AudioFormat.CHANNEL_OUT_MONO,
 				AudioFormat.ENCODING_PCM_16BIT
 			);
 		} catch (RuntimeException e) {
@@ -141,5 +140,4 @@ public class AudioRecordService {
 	public static int getSampleRateHz() {
 		return sampleRateHz;
 	}
-
 }

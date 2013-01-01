@@ -11,6 +11,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.ideaheap.sound.R;
 
 public class RecordFragment extends SherlockFragment {
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
 		return inflater.inflate(R.layout.record, container, false);
@@ -22,4 +23,5 @@ public class RecordFragment extends SherlockFragment {
 		MenuInflater inflater = this.getSherlockActivity().getSupportMenuInflater();
 		inflater.inflate(R.menu.record_menu, menu);
 	}
+
 }
