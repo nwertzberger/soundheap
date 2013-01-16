@@ -4,14 +4,16 @@ import java.io.File;
 import java.io.IOException;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.ideaheap.io.VorbisFileOutputStream;
 import com.ideaheap.io.VorbisInfo;
 
 public class RepositoryService {
 	
+	private static final String TAG = RepositoryService.class.toString();
 	private final File repository;
-	private VorbisInfo info;
+	private VorbisInfo info = new VorbisInfo();
 	private String playbackFile = null;
 
 	public RepositoryService(File repository) {
@@ -27,7 +29,9 @@ public class RepositoryService {
 	}
 
 	public VorbisFileOutputStream createNewVorbis(String playbackFile) throws IOException {
-		return new VorbisFileOutputStream(repository.getPath() + "/" + playbackFile, info);
+		String fname = repository.getPath() + "/" + playbackFile;
+		Log.d(TAG, "creating file '" + fname + "'");
+		return new VorbisFileOutputStream(fname, info);
 	}
 
 	public void setActiveTrack(String file) {

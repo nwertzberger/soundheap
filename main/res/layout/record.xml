@@ -4,6 +4,7 @@
     android:layout_height="fill_parent"
     android:padding="16dp"
     android:id="@+id/record_layout" >
+    
     <TextView 
         android:id="@+id/RecordText"
         android:layout_width="wrap_content"
@@ -12,6 +13,7 @@
         android:layout_margin="16dp"
         android:text="@string/record_title"
         />
+    
     <ImageButton
         android:id="@+id/RecordButton"
         android:layout_width="fill_parent"
@@ -19,7 +21,9 @@
         android:layout_below="@+id/RecordText"
         android:padding="30dp"
         android:src="@drawable/device_access_mic_muted"
-        android:contentDescription="@string/record_title" />
+        android:contentDescription="@string/record_title"
+        />
+    
     <CheckBox 
         android:id="@+id/IgnoreSilenceBox"
         android:text="@string/ignore_silence"
@@ -28,6 +32,35 @@
         android:layout_alignLeft="@+id/RecordButton"
         android:layout_below="@+id/RecordButton"
         android:checked="false"
+        />
+    
+    <EditText
+        android:id="@+id/RecordFilePrefix"
+        android:hint="@string/save_file_prefix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/IgnoreSilenceBox"
+        android:text="@string/default_file_prefix"
+        android:textSize="8pt"
+        android:ems="6"
+        />
+    <TextView
+        android:id="@+id/RecordFilePostFix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/RecordFilePrefix"
+        android:layout_toRightOf="@+id/RecordFilePrefix"
+        android:textSize="8pt"
+        android:text="@string/file_postfix" />
+    
+    <TextView
+        android:id="@+id/RecordFileName"
+        android:textSize="8pt"
+        android:layout_below="@+id/IgnoreSilenceBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_file_prefix"
+        android:visibility="invisible"
         />
     
 </RelativeLayout>

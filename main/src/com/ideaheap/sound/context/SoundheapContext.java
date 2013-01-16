@@ -83,7 +83,8 @@ public class SoundheapContext {
 		recordController = new RecordController(
 			activity,
 			new TabListener(record,R.id.fragment_container),
-			recorder
+			recorder,
+			repository
 		);
 		tabs.add(recordController);
 		

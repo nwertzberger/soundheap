@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">SoundHeap</string>
     <string name="record_title">Record</string>
+    <string name="recording">Recording.</string>
+    <string name="ready">Ready.</string>
     <string name="playback_title">Playback</string>
     <string name="project_title">Tracks</string>
     <string name="delete_action">Erase</string>
@@ -20,4 +22,7 @@
     <string name="play_pause">Play/Pause</string>
     <string name="stop">Stop</string>
     <string name="about">About</string>
+    <string name="default_file_prefix">soundheap</string>
+    <string name="save_file_prefix">File Prefix</string>
+    <string name="file_postfix">.(currentDate).ogg</string>
 </resources>

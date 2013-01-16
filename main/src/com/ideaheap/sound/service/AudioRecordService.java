@@ -18,7 +18,7 @@ import android.util.Log;
 public class AudioRecordService {
 	
 	// Debugging tag.
-	private static final String TAG = "PRM - RecordService";
+	private static final String TAG = AudioRecordService.class.toString();
 	
 	// Microphone settings (sample rate / buffers)
 	private static final int sampleRateHz = 44100;
@@ -45,7 +45,7 @@ public class AudioRecordService {
 		try {
 			recordBufferSize = AudioRecord.getMinBufferSize(
 				sampleRateHz,
-				AudioFormat.CHANNEL_OUT_MONO,
+				AudioFormat.CHANNEL_IN_MONO,
 				AudioFormat.ENCODING_PCM_16BIT
 			);
 		} catch (RuntimeException e) {
@@ -78,6 +78,7 @@ public class AudioRecordService {
 		}
 		if (state == STOPPED)
 		{
+			Log.d(TAG, "Received Record Request");
 			recordState = RECORDING;
 			AudioRecord recorder = null;
 			try {
@@ -87,7 +88,7 @@ public class AudioRecordService {
 					sampleRateHz,
 					AudioFormat.CHANNEL_IN_MONO,
 					AudioFormat.ENCODING_PCM_16BIT,
-					recordBufferSize*2
+					recordBufferSize*4
 				);
 			
 				Log.d(TAG,"Starting Recording");
@@ -141,7 +142,4 @@ public class AudioRecordService {
 		return sampleRateHz;
 	}
 
-	public void toggle() {
-		Log.d(TAG, "Toggling");
-	}
 }
