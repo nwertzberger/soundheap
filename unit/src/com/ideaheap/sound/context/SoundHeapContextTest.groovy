@@ -37,7 +37,7 @@ class SoundHeapContextTest {
 		when(activity.findViewById(anyInt())).thenReturn(view)
 		when(res.getString(anyInt())).thenReturn("junk")
 		when(host.newTabSpec(anyString())).thenReturn(spec)
-		ctx = SoundheapContext.getContext(activity)
+		ctx = SoundheapContext.generateContext(activity)
 	}
 	
 	@Test

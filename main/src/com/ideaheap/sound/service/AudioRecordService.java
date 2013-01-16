@@ -140,4 +140,8 @@ public class AudioRecordService {
 	public static int getSampleRateHz() {
 		return sampleRateHz;
 	}
+
+	public void toggle() {
+		Log.d(TAG, "Toggling");
+	}
 }

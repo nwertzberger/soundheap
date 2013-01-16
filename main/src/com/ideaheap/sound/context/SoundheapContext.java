@@ -4,10 +4,12 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.TabActivity;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.widget.TabHost;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -49,6 +51,7 @@ public class SoundheapContext {
 	
 	// Request
 	public MainController mainController;
+	public RecordController recordController;
 
 	/**
 	 * This is a Singleton class, so we can initialize singleton scope in the
@@ -75,38 +78,47 @@ public class SoundheapContext {
 	private void requestScope(SherlockFragmentActivity activity) {
 		List<TabController> tabs = new LinkedList<TabController>();
 		
-		tabs.add(new RecordController(
+		// Record-tab related builds
+		RecordFragment record = new RecordFragment();
+		recordController = new RecordController(
 			activity,
-			new TabListener(
-				new RecordFragment(),
-				R.id.fragment_container
-			)
-		));
+			new TabListener(record,R.id.fragment_container),
+			recorder
+		);
+		tabs.add(recordController);
+		
+		
+		// Playback-tab related builds
+		PlaybackFragment playback = new PlaybackFragment();
 		tabs.add(new PlaybackController(
 			activity,
-			new TabListener(
-				new PlaybackFragment(),
-				R.id.fragment_container
-			)
+			new TabListener(playback, R.id.fragment_container)
 		));
+		
+		// Project-tab related builds
+		ProjectFragment projects = new ProjectFragment();
 		tabs.add(new ProjectController(
 			activity,
-			new TabListener(
-				new ProjectFragment(),
-				R.id.fragment_container
-			)
+			new TabListener(projects, R.id.fragment_container)
 		));
 		
 		// Build the ui views
 		mainController = new MainController(activity, tabs);
 	}
 	
-	public static SoundheapContext getContext(SherlockFragmentActivity activity) {
+	public static SoundheapContext generateContext(SherlockFragmentActivity activity) {
 		if (ctx == null) {
 			ctx = new SoundheapContext(activity);
 		}
 		ctx.requestScope(activity);
+		
 		return ctx;
 	}
-
+	
+	public static SoundheapContext getContext() throws SoundheapException {
+		if (ctx == null) {
+			throw new SoundheapException("No previous activity tied to this context");
+		}
+		return ctx;
+	}
 }

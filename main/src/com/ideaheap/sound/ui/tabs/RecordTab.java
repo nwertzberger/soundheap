@@ -60,7 +60,6 @@ public class RecordTab {
 		this.activity.findViewById(R.id.RecordButton).setOnClickListener(
 				new OnClickListener() {
 					public String newTrack = null;
-
 					public void onClick(View parent) {
 						if (recorder.isRecording()) {
 							Log.d(TAG, "Stopping");

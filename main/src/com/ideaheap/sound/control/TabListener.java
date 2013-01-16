@@ -11,7 +11,7 @@ public class TabListener implements ActionBar.TabListener {
 	
 	private static final String TAG = TabListener.class.toString();
 	
-	private final SherlockFragment fragment;
+	public final SherlockFragment fragment;
 
 	private final int elementId;
 	

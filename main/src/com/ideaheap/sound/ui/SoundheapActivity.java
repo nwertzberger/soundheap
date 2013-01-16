@@ -27,7 +27,6 @@ import com.ideaheap.sound.context.SoundheapContext;
  *
  */
 public class SoundheapActivity extends SherlockFragmentActivity {
-	
     private static final String TAG = SoundheapActivity.class.toString();
 	private SoundheapContext context;
 	private final SherlockFragmentActivity thisActivity = this;
@@ -41,12 +40,9 @@ public class SoundheapActivity extends SherlockFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Log.d(TAG, "Starting Up");
-        
-        context = SoundheapContext.getContext(this);
+        context = SoundheapContext.generateContext(this);
         context.mainController.setup();
     }
-    
-    
     
     @Override
     public void onResume() {
@@ -61,7 +57,6 @@ public class SoundheapActivity extends SherlockFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	context.mainController.inflateMenu(menu);
-		return true;
+		return super.onCreateOptionsMenu(menu);
     }
-
 }
