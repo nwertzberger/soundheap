@@ -1,18 +1,9 @@
 package com.ideaheap.sound.context;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
-import android.app.Activity;
-import android.app.TabActivity;
 import android.content.res.Resources;
-import android.os.Bundle;
-import android.widget.TabHost;
-
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ideaheap.sound.R;
 import com.ideaheap.sound.control.MainController;
@@ -27,10 +18,6 @@ import com.ideaheap.sound.service.RepositoryService;
 import com.ideaheap.sound.ui.PlaybackFragment;
 import com.ideaheap.sound.ui.ProjectFragment;
 import com.ideaheap.sound.ui.RecordFragment;
-import com.ideaheap.sound.ui.SoundheapActivity;
-import com.ideaheap.sound.ui.tabs.PlaybackTab;
-import com.ideaheap.sound.ui.tabs.ProjectTab;
-import com.ideaheap.sound.ui.tabs.RecordTab;
 
 /**
  * Instead of using Spring or some other IOC framework, I have decided to

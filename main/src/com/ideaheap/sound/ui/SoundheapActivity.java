@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -42,6 +43,7 @@ public class SoundheapActivity extends SherlockFragmentActivity {
         Log.d(TAG, "Starting Up");
         context = SoundheapContext.generateContext(this);
         context.mainController.setup();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
     
     @Override

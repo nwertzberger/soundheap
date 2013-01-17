@@ -16,10 +16,13 @@
     
     <ImageButton
         android:id="@+id/RecordButton"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/RecordText"
-        android:padding="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:padding="45dp"
+        android:background="@drawable/circle_button"
         android:src="@drawable/device_access_mic_muted"
         android:contentDescription="@string/record_title"
         />
@@ -29,7 +32,6 @@
         android:text="@string/ignore_silence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/RecordButton"
         android:layout_below="@+id/RecordButton"
         android:checked="false"
         />

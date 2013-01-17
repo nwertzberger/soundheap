@@ -1,6 +1,8 @@
 package com.ideaheap.sound.control;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import android.view.View;
 import android.widget.EditText;
@@ -9,14 +11,36 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ideaheap.sound.R;
+import com.ideaheap.sound.service.AudioLevelListener;
 import com.ideaheap.sound.service.AudioRecordService;
+import com.ideaheap.sound.service.AudioUpdateListener;
 import com.ideaheap.sound.service.RepositoryService;
 
-public class RecordController extends TabController {
+public class RecordController extends TabController implements AudioLevelListener, AudioUpdateListener{
 
 	private final AudioRecordService recorder;
 	private final RepositoryService repo;
 	private String startingText = "soundheap";
+	private String saveFile = startingText + ".ogg";
+	private ImageButton recButton;
+	private final SherlockFragmentActivity activity;
+	private boolean ignoreSilence;
+	
+	private Runnable recordSession = new Runnable() {
+		public void run() {
+			try {
+				if (ignoreSilence) {
+					// TODO add the smarts back in here
+					recorder.startRecording(repo.createNewVorbis(saveFile));
+				}
+				else {
+					recorder.startRecording(repo.createNewVorbis(saveFile));
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	};
 
 	public RecordController(
 			SherlockFragmentActivity activity,
@@ -24,8 +48,11 @@ public class RecordController extends TabController {
 			AudioRecordService recorder,
 			RepositoryService repo) {
 		super(activity, R.string.record_title, listener);
+		this.activity = activity;
 		this.recorder = recorder;
 		this.repo = repo;
+		
+		recorder.setAudioLevelListener(this);
 	}
 	
 	public void setupView(View view) {
@@ -37,15 +64,17 @@ public class RecordController extends TabController {
 	}
 
 	private void updateRecordInfo(View v, boolean recording) {
-		ImageButton recButton = (ImageButton)v.findViewById(R.id.RecordButton);
+		recButton = (ImageButton)v.findViewById(R.id.RecordButton);
 		TextView    recText = (TextView)v.findViewById(R.id.RecordText);
 		if (recording) {
 			recButton.setImageResource(R.drawable.device_access_mic);
+			recButton.setBackgroundResource(R.drawable.circle_button_selected);
 			recText.setText(R.string.recording);
 			toggleInteractiveNaming(v, true);
 		}
 		else {
 			recButton.setImageResource(R.drawable.device_access_mic_muted);
+			recButton.setBackgroundResource(R.drawable.circle_button);
 			recText.setText(R.string.ready);
 			toggleInteractiveNaming(v, false);
 		}
@@ -62,7 +91,7 @@ public class RecordController extends TabController {
 		TextView    saveFileEnding = (TextView)v.findViewById(R.id.RecordFilePostFix);
 		EditText    saveFilePrefix = (EditText)v.findViewById(R.id.RecordFilePrefix);
 		
-		actualFileToSave.setText(startingText + ".ogg");
+		actualFileToSave.setText(saveFile);
 		
 		actualFileToSave.setVisibility(lockedinVisibility);
 		saveFileEnding.setVisibility(interactiveVisibility);
@@ -72,28 +101,33 @@ public class RecordController extends TabController {
 	public void toggleRecord(View v) {
 		final EditText filePrefix = (EditText)
 				v.findViewById(R.id.RecordFilePrefix);
-		
-		startingText = filePrefix.getText().toString();
+		Calendar c = Calendar.getInstance();
+		String timestamp = new SimpleDateFormat(
+				"yy.MM.dd-HH.mm.ss").format(c.getTime());	
+		saveFile = filePrefix.getText().toString() + "." + timestamp + ".ogg";
 		
 		if (recorder.isRecording()) {
 			recorder.stopRecording();
 			updateRecordInfo(v, false);
 		}
 		else {
-			new Thread() {
-				public void run() {
-					try {
-						recorder.startRecording(repo.createNewVorbis(startingText + ".ogg"));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}.start();
+			new Thread(recordSession).start();
 			updateRecordInfo(v, true);
 		}
 	}
 
-	public void setIgnoreSilence(boolean isChecked) {
+	public void setIgnoreSilence(boolean ignoreSilence) {
+		this.ignoreSilence = ignoreSilence;
+	}
+
+	@Override
+	public void onLevelChange(final int level) {
+		//TODO
+	}
+
+	@Override
+	public void onUpdate(int trackLocation) {
+		//TODO
 		
 	}
 }

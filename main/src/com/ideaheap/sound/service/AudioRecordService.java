@@ -37,6 +37,8 @@ public class AudioRecordService {
 	private Integer 			recordState 		= STOPPED;
 	private AudioUpdateListener audioUpdateListener = null;
 
+	private com.ideaheap.sound.service.AudioLevelListener levelListener;
+
 	/**
 	 * Calculate the buffer sizes based on out
 	 */
@@ -100,6 +102,9 @@ public class AudioRecordService {
 					if (audioUpdateListener != null) {
 						audioUpdateListener.onUpdate(framesRead / sampleRateHz);
 					}
+					if (levelListener != null) {
+						levelListener.onLevelChange(buffer[0] & 0xff);
+					}
 				}
 				
 				// HACK: It keeps cutting me off!
@@ -136,6 +141,10 @@ public class AudioRecordService {
 	
 	public void setAudioUpdateListener(AudioUpdateListener updateListener) {
 		this.audioUpdateListener = updateListener;
+	}
+	
+	public void setAudioLevelListener(AudioLevelListener levelListener) {
+		this.levelListener = levelListener;
 	}
 
 	public static int getSampleRateHz() {
