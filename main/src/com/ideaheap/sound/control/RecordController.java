@@ -20,27 +20,28 @@ public class RecordController extends TabController implements AudioLevelListene
 
 	private final AudioRecordService recorder;
 	private final RepositoryService repo;
-	private String startingText = "soundheap";
-	private String saveFile = startingText + ".ogg";
 	private ImageButton recButton;
-	private final SherlockFragmentActivity activity;
 	private boolean ignoreSilence;
+	private String saveFile = "soundheap.ogg";
+	private final SherlockFragmentActivity activity;
 	
-	private Runnable recordSession = new Runnable() {
-		public void run() {
-			try {
-				if (ignoreSilence) {
-					// TODO add the smarts back in here
-					recorder.startRecording(repo.createNewVorbis(saveFile));
+	private Runnable getRecordSession(final String saveFile) {
+		return new Runnable() {
+			public void run() {
+				try {
+					if (ignoreSilence) {
+						// TODO add the smarts back in here
+						recorder.startRecording(repo.createNewVorbis(saveFile));
+					}
+					else {
+						recorder.startRecording(repo.createNewVorbis(saveFile));
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				else {
-					recorder.startRecording(repo.createNewVorbis(saveFile));
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-		}
-	};
+		};
+	}
 
 	public RecordController(
 			SherlockFragmentActivity activity,
@@ -56,31 +57,27 @@ public class RecordController extends TabController implements AudioLevelListene
 	}
 	
 	public void setupView(View view) {
-		updateRecordInfo(view, recorder.isRecording());
+		updateRecordInfo(view, recorder.isRecording(), saveFile);
 	}
 	
-	public void setStartingText(String text) {
-		this.startingText = text;
-	}
-
-	private void updateRecordInfo(View v, boolean recording) {
+	private void updateRecordInfo(View v, boolean recording, String saveFile) {
 		recButton = (ImageButton)v.findViewById(R.id.RecordButton);
 		TextView    recText = (TextView)v.findViewById(R.id.RecordText);
 		if (recording) {
 			recButton.setImageResource(R.drawable.device_access_mic);
 			recButton.setBackgroundResource(R.drawable.circle_button_selected);
 			recText.setText(R.string.recording);
-			toggleInteractiveNaming(v, true);
+			toggleInteractiveNaming(v, true, saveFile);
 		}
 		else {
 			recButton.setImageResource(R.drawable.device_access_mic_muted);
 			recButton.setBackgroundResource(R.drawable.circle_button);
 			recText.setText(R.string.ready);
-			toggleInteractiveNaming(v, false);
+			toggleInteractiveNaming(v, false, saveFile);
 		}
 	}
 
-	private void toggleInteractiveNaming(View v, boolean lock) {
+	private void toggleInteractiveNaming(View v, boolean lock, String saveFile) {
 		int interactiveVisibility = View.VISIBLE;
 		int lockedinVisibility = View.VISIBLE;
 		
@@ -99,20 +96,20 @@ public class RecordController extends TabController implements AudioLevelListene
 	}
 
 	public void toggleRecord(View v) {
-		final EditText filePrefix = (EditText)
-				v.findViewById(R.id.RecordFilePrefix);
+		
+		// Figure out the save file's name
+		final EditText filePrefix = (EditText) v.findViewById(R.id.RecordFilePrefix);
 		Calendar c = Calendar.getInstance();
-		String timestamp = new SimpleDateFormat(
-				"yy.MM.dd-HH.mm.ss").format(c.getTime());	
+		String timestamp = new SimpleDateFormat("yy.MM.dd-HH.mm.ss").format(c.getTime());	
 		saveFile = filePrefix.getText().toString() + "." + timestamp + ".ogg";
 		
 		if (recorder.isRecording()) {
 			recorder.stopRecording();
-			updateRecordInfo(v, false);
+			updateRecordInfo(v, false, saveFile);
 		}
 		else {
-			new Thread(recordSession).start();
-			updateRecordInfo(v, true);
+			new Thread(getRecordSession(saveFile)).start();
+			updateRecordInfo(v, true, saveFile);
 		}
 	}
 
