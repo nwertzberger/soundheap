@@ -4,30 +4,50 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.ideaheap.io.AudioOutputStream;
+import com.ideaheap.io.VorbisFileOutputStream;
 import com.ideaheap.sound.R;
 import com.ideaheap.sound.service.AudioLevelListener;
 import com.ideaheap.sound.service.AudioRecordService;
 import com.ideaheap.sound.service.AudioUpdateListener;
 import com.ideaheap.sound.service.RepositoryService;
 
-public class RecordController extends TabController implements AudioLevelListener, AudioUpdateListener{
+public class RecordController extends TabController {
 
+	protected static final String TAG = null;
 	private final AudioRecordService recorder;
 	private final RepositoryService repo;
 	private ImageButton recButton;
 	private boolean ignoreSilence;
 	private String saveFile = "soundheap.ogg";
 	private final SherlockFragmentActivity activity;
+	private View activeView;
 	
-	private Runnable getRecordSession(final String saveFile) {
-		return new Runnable() {
-			public void run() {
+	/**
+	 * This builds the AsyncTask for recording. TODO: Break this out into
+	 * another file.
+	 * 
+	 * @return
+	 */
+	private AsyncTask<String, Integer, Void> createRecordingTask() {
+		return new AsyncTask<String, Integer, Void>() {
+			@Override
+			protected Void doInBackground(String ... params) {
+				recorder.setAudioUpdateListener(new AudioUpdateListener() {
+					@Override
+					public void onUpdate(int trackLocation) {
+						publishProgress(trackLocation);
+					}
+				});
+				
 				try {
 					if (ignoreSilence) {
 						// TODO add the smarts back in here
@@ -37,9 +57,16 @@ public class RecordController extends TabController implements AudioLevelListene
 						recorder.startRecording(repo.createNewVorbis(saveFile));
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
+					Log.e(TAG, "Can't create vorbis stream", e);
 				}
+				return null;
 			}
+
+			@Override
+			protected void onProgressUpdate(Integer... progress) {
+				updateRecordButton(progress[0]);
+			}
+
 		};
 	}
 
@@ -52,8 +79,6 @@ public class RecordController extends TabController implements AudioLevelListene
 		this.activity = activity;
 		this.recorder = recorder;
 		this.repo = repo;
-		
-		recorder.setAudioLevelListener(this);
 	}
 	
 	public void setupView(View view) {
@@ -103,28 +128,24 @@ public class RecordController extends TabController implements AudioLevelListene
 		String timestamp = new SimpleDateFormat("yy.MM.dd-HH.mm.ss").format(c.getTime());	
 		saveFile = filePrefix.getText().toString() + "." + timestamp + ".ogg";
 		
+		activeView = v;
 		if (recorder.isRecording()) {
 			recorder.stopRecording();
-			updateRecordInfo(v, false, saveFile);
 		}
 		else {
-			new Thread(getRecordSession(saveFile)).start();
-			updateRecordInfo(v, true, saveFile);
+			createRecordingTask().execute();
 		}
 	}
 
+	protected void updateRecordButton(Integer trackPos) {
+		// We only need to update on start and stop
+		if (trackPos <= 0) {
+			updateRecordInfo(activeView, recorder.isRecording(), saveFile);
+		}
+	}
+	
 	public void setIgnoreSilence(boolean ignoreSilence) {
 		this.ignoreSilence = ignoreSilence;
 	}
 
-	@Override
-	public void onLevelChange(final int level) {
-		//TODO
-	}
-
-	@Override
-	public void onUpdate(int trackLocation) {
-		//TODO
-		
-	}
 }

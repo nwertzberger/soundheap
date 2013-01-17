@@ -96,6 +96,7 @@ public class AudioRecordService {
 				Log.d(TAG,"Starting Recording");
 				recorder.startRecording();
 				
+				audioUpdateListener.onUpdate(0);
 				while (recordState == RECORDING) {
 					framesRead += recorder.read(buffer, 0, buffer.length);
 					vout.write(buffer, 0, buffer.length);
@@ -127,11 +128,11 @@ public class AudioRecordService {
 				Log.w(TAG, "Error recording!", x);
 			}
 			finally {
+				recordState = STOPPED;
 				if (audioUpdateListener != null) {
 					audioUpdateListener.onUpdate(-1);
 				}
 			}
-			recordState = STOPPED;
 		}
 	}
 	
